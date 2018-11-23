@@ -56,6 +56,7 @@ def compare_api_userword(description,tags,name,user_keywords,filter_short=True,c
 
 	words = remove_punctuation(" ".join([description,tags,name])).lower()
 	words = get_lemmatised_list(words)
+	print("***LEMMATISED WORDS***  ",words)
 
 	if filter_short:
 		words = list(filter(lambda x: len(x) > 2, words))
@@ -71,17 +72,20 @@ def compare_api_userword(description,tags,name,user_keywords,filter_short=True,c
 				continue
 
 			similarity_score = levenshteinDistance(keyword,word)
+			print(word,keyword,similarity_score)
 
 			if similarity_score == 0:
 				score += 10
 				print(keyword,word)
+			elif keyword in word and len(keyword) >= cutoff or word in keyword and len(word) >= cutoff:
+					score += 5
 			elif similarity_score < cutoff:
 				score += 1.0/similarity_score
 
 		# if word in words:
 		# 	#print("***",word,"***")
 		# 	score += 1
-
+	print("Final score:",score,"\n")
 	return score
 
 def get_tags(id,url="https://wso2.lavbic.net:9443/api/am/store/v0.11/apis/"):
@@ -103,14 +107,16 @@ def get_related_apis(apis,user_keyword):
 def search(user_keyword):
 	user_keyword = get_lemmatised_list(user_keyword.lower())
 	apis = get_api_list()
+	print(apis)
 	related = get_related_apis(apis,user_keyword)
 
 	return sorted(related,key=lambda l:l[0],reverse=True)
 
 
-user_keyword = "čakalne vrste in ostale storitve."
+user_keyword = "thereum"
 related = search(remove_punctuation(user_keyword))
 print(related)
+print(get_lemmatised_list("ethereumapi lol"))
 
 
 
