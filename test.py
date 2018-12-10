@@ -113,10 +113,10 @@ def search(user_keyword):
 	return sorted(related,key=lambda l:l[0],reverse=True)
 
 
-user_keyword = "thereum"
+user_keyword = "24al"
 related = search(remove_punctuation(user_keyword))
 print(related)
-print(get_lemmatised_list("ethereumapi lol"))
+#print(get_lemmatised_list("ethereumapi lol"))
 
 
 
